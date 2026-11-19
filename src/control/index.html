@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandu - Pet Control Center</title>
+  <link rel="stylesheet" href="control.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">🎋</span>
+        <div class="logo-text">
+          <h1>Pandu</h1>
+          <span class="version">v0.8 (Sprint 8)</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="home">
+          <span class="tab-icon">🏠</span> Home
+        </button>
+        <button class="nav-tab" data-tab="todo">
+          <span class="tab-icon">📋</span> Tasks
+        </button>
+        <button class="nav-tab" data-tab="personality">
+          <span class="tab-icon">🎭</span> Personality
+        </button>
+        <button class="nav-tab" data-tab="style">
+          <span class="tab-icon">🎨</span> Style
+        </button>
+        <button class="nav-tab" data-tab="settings">
+          <span class="tab-icon">⚙️</span> Settings
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="hide-window-btn" class="secondary-btn">Close to Tray</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-panel">
+      <!-- TAB 1: HOME -->
+      <section id="tab-home" class="tab-content active">
+        <header class="tab-header">
+          <h2>Pet Vitality</h2>
+          <span id="home-personality-badge" class="badge">🎓 Scholar Panda</span>
+        </header>
+
+        <div class="pet-status-card">
+          <div class="pet-avatar-preview">
+            <span id="home-pet-emoji" class="avatar-emoji">🐼</span>
+            <div class="pet-avatar-meta">
+              <h3 id="home-pet-title">Pandu</h3>
+              <p id="home-pet-emotion">Feeling: <strong>Happy</strong></p>
+            </div>
+          </div>
+          <div class="pet-quick-actions">
+            <button id="home-feed-btn" class="action-btn feed-btn">🎋 Feed Bamboo</button>
+            <button id="home-pet-btn" class="action-btn pet-btn">🐾 Pet Panda</button>
+          </div>
+        </div>
+
+        <div class="needs-section">
+          <h3>Needs & Fullness</h3>
+          
+          <div class="need-item">
+            <div class="need-label">
+              <span>Hunger Fullness</span>
+              <span id="val-hunger" class="need-val">80%</span>
+            </div>
+            <div class="progress-track">
+              <div id="bar-hunger" class="progress-fill fill-green" style="width: 80%;"></div>
+            </div>
+          </div>
+
+          <div class="need-item">
+            <div class="need-label">
+              <span>Energy & Rest</span>
+              <span id="val-energy" class="need-val">90%</span>
+            </div>
+            <div class="progress-track">
+              <div id="bar-energy" class="progress-fill fill-blue" style="width: 90%;"></div>
+            </div>
+          </div>
+
+          <div class="need-item">
+            <div class="need-label">
+              <span>Mood & Spirit</span>
+              <span id="val-mood" class="need-val">85%</span>
+            </div>
+            <div class="progress-track">
+              <div id="bar-mood" class="progress-fill fill-yellow" style="width: 85%;"></div>
+            </div>
+          </div>
+
+          <div class="need-item">
+            <div class="need-label">
+              <span>Affection & Love</span>
+              <span id="val-affection" class="need-val">80%</span>
+            </div>
+            <div class="progress-track">
+              <div id="bar-affection" class="progress-fill fill-pink" style="width: 80%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="neglect-card">
+          <h4>Neglect & Size Status</h4>
+          <p id="neglect-status-text">Pandu is at full healthy size (Stage 0).</p>
+        </div>
+      </section>
+
+      <!-- TAB 2: PERSONALITY -->
+      <section id="tab-personality" class="tab-content">
+        <header class="tab-header">
+          <h2>Personalities</h2>
+          <div id="personality-lock-badge" class="badge">Auto-Switch Active</div>
+        </header>
+
+        <div class="why-switched-card">
+          <span class="why-icon">💡</span>
+          <div>
+            <strong>Why this personality?</strong>
+            <p id="why-switched-text">Initial startup companion: Scholar Panda.</p>
+          </div>
+          <button id="resume-auto-btn" class="tiny-btn hidden">Resume Auto</button>
+        </div>
+
+        <div class="personalities-grid" id="personalities-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- TAB 3: STYLE (Sprint 8) -->
+      <section id="tab-style" class="tab-content">
+        <header class="tab-header">
+          <div>
+            <h2>Visual Styles</h2>
+            <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Switch Pandu's visual theme anytime without restart.</p>
+          </div>
+          <span id="current-style-badge" class="badge">Theme Loader</span>
+        </header>
+
+        <!-- Style Cards Grid -->
+        <div class="style-cards-grid" id="style-cards-container">
+          <!-- Dynamically populated by control.js -->
+        </div>
+
+        <!-- Emotion Preview Grid Header -->
+        <div class="settings-card" style="margin-top: 16px;">
+          <div class="settings-card-header" style="justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="card-icon">🎨</span>
+              <div>
+                <h3>Emotion Preview Grid</h3>
+                <p>Live preview of all emotions and size variants in the selected style.</p>
+              </div>
+            </div>
+            <!-- Size Selector Pills for Preview -->
+            <div class="preview-size-pills">
+              <button class="preview-size-btn active" data-size="large">Large</button>
+              <button class="preview-size-btn" data-size="medium">Medium</button>
+              <button class="preview-size-btn" data-size="tiny">Tiny (Peek)</button>
+            </div>
+          </div>
+
+          <!-- Emotion Grid Container -->
+          <div id="style-preview-grid" class="preview-grid">
+            <!-- Grid items populated by control.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: TODO / TASKS (Sprint 7) -->
+      <section id="tab-todo" class="tab-content">
+        <header class="tab-header">
+          <div>
+            <h2>Productivity & Tasks</h2>
+            <p style="font-size: 11px; color: #94a3b8; margin-top: 2px;">Keep your day organized. Pandu reminds you of upcoming deadlines.</p>
+          </div>
+          <div class="header-badges">
+            <span id="todo-stats-badge" class="badge">0 Pending / 0 Done</span>
+            <button id="ctrl-voice-btn" class="action-btn feed-btn" style="padding: 5px 12px; font-size: 11px;">🎤 Voice Task</button>
+            <button id="ctrl-new-todo-btn" class="action-btn pet-btn" style="padding: 5px 12px; font-size: 11px;">+ New Task</button>
+          </div>
+        </header>
+
+        <!-- Voice Recording View in Control Window -->
+        <div id="ctrl-voice-banner" class="settings-card hidden" style="border-color: #ff4757; margin-bottom: 12px; background: rgba(255, 71, 87, 0.05);">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 22px;">🎤</span>
+              <div>
+                <strong id="ctrl-voice-status" style="color: #ff6b81; font-size: 12px;">Listening... Speak your task!</strong>
+                <div id="ctrl-voice-timer" style="font-size: 10px; color: #94a3b8;">0:00 (Click done when finished)</div>
+              </div>
+            </div>
+            <button id="ctrl-btn-stop-voice" class="secondary-btn" style="width: auto; background: #ff4757; color: #fff; border: none; font-weight: bold; font-size: 11px;">⏹️ Done Speaking</button>
+          </div>
+        </div>
+
+        <!-- Task Draft Confirmation Card in Control Window -->
+        <div id="ctrl-draft-card" class="settings-card hidden" style="border-color: #2ed573; margin-bottom: 12px; background: rgba(46, 213, 115, 0.05);">
+          <div class="settings-card-header" style="margin-bottom: 8px;">
+            <span class="card-icon">✨</span>
+            <div>
+              <h3>Proposed Task (Confirm to Save)</h3>
+              <p>Nothing is saved to your list without your confirmation.</p>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div>
+              <label style="font-size: 11px; color: #94a3b8;">Task Title:</label>
+              <input type="text" id="ctrl-draft-title" class="draft-input" style="width: 100%;" />
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div style="flex: 1;">
+                <label style="font-size: 11px; color: #94a3b8;">Due Date & Time:</label>
+                <input type="datetime-local" id="ctrl-draft-due" class="draft-input" style="width: 100%;" />
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 11px; color: #94a3b8;">Priority:</label>
+                <select id="ctrl-draft-priority" class="draft-select" style="width: 100%; height: 32px;">
+                  <option value="low">Low 🔵</option>
+                  <option value="medium" selected>Medium 🟡</option>
+                  <option value="high">High 🔴</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+              <button id="ctrl-draft-save-btn" class="action-btn feed-btn" style="padding: 6px 14px; font-size: 11px;">✅ Confirm & Add</button>
+              <button id="ctrl-draft-discard-btn" class="secondary-btn" style="width: auto; padding: 6px 12px; font-size: 11px;">❌ Discard</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="todo-filter-bar">
+          <div class="filter-pills">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="today">Today</button>
+            <button class="filter-pill" data-filter="upcoming">Upcoming</button>
+            <button class="filter-pill" data-filter="done">Completed</button>
+          </div>
+          <span id="filter-count-text" style="font-size: 11px; color: #64748b;">Showing all tasks</span>
+        </div>
+
+        <!-- Task List -->
+        <div id="ctrl-todo-list" class="todo-list-container">
+          <div class="todo-empty-state">Loading tasks...</div>
+        </div>
+
+        <!-- Add / Edit Modal -->
+        <div id="ctrl-task-modal" class="modal-backdrop hidden">
+          <div class="modal-box">
+            <div class="modal-header">
+              <h3 id="modal-task-title-heading">New Task</h3>
+              <button id="modal-task-close" class="draft-close">×</button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="modal-task-id" />
+              <div style="margin-bottom: 10px;">
+                <label style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 4px;">Task Description:</label>
+                <input type="text" id="modal-task-title-input" class="draft-input" placeholder="e.g. Finish math problem set" maxlength="150" />
+              </div>
+              <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                <div style="flex: 1;">
+                  <label style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 4px;">Due Date (Optional):</label>
+                  <input type="datetime-local" id="modal-task-due-input" class="draft-input" />
+                </div>
+                <div style="flex: 1;">
+                  <label style="font-size: 11px; color: #94a3b8; display: block; margin-bottom: 4px;">Priority:</label>
+                  <select id="modal-task-priority-select" class="draft-select" style="height: 32px;">
+                    <option value="low">Low 🔵</option>
+                    <option value="medium" selected>Medium 🟡</option>
+                    <option value="high">High 🔴</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="modal-task-save-btn" class="action-btn feed-btn">Save Task</button>
+              <button id="modal-task-cancel-btn" class="secondary-btn" style="width: auto;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: SETTINGS -->
+      <section id="tab-settings" class="tab-content">
+        <header class="tab-header">
+          <h2>App Settings</h2>
+          <div class="header-badges">
+            <span id="ai-status-badge" class="badge badge-offline">AI: Offline</span>
+          </div>
+        </header>
+
+        <div class="settings-group">
+          <!-- Gemini Cloud AI Settings Card (Sprint 5) -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <span class="card-icon">✨</span>
+              <div>
+                <h3>Gemini Cloud AI Chat</h3>
+                <p>Add a free Gemini API key to enable personality-driven AI conversations.</p>
+              </div>
+            </div>
+
+            <div class="api-key-form">
+              <div class="model-row">
+                <label for="ai-model-select" class="model-label">Model:</label>
+                <select id="ai-model-select" class="model-dropdown">
+                  <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Recommended)</option>
+                  <option value="gemini-3.8-flash">Gemini 3.8 Flash (High Quality)</option>
+                  <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                  <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite</option>
+                  <option value="custom">Custom model name...</option>
+                </select>
+                <input type="text" id="custom-model-input" class="custom-model-input hidden" placeholder="e.g. gemini-3.1-flash-lite" />
+              </div>
+
+              <div class="input-row">
+                <input type="password" id="api-key-input" placeholder="Paste your Gemini API key here..." autocomplete="off" />
+                <button id="save-key-btn" class="action-btn feed-btn">Save Key</button>
+                <button id="test-key-btn" class="secondary-btn" style="width: auto;">Test</button>
+                <button id="clear-key-btn" class="secondary-btn" style="width: auto;">Clear</button>
+              </div>
+              <div id="key-status-msg" class="key-status">🔒 Encrypted at rest using Windows DPAPI (safeStorage).</div>
+            </div>
+
+            <div class="rate-limit-stats">
+              <div class="stat-item">
+                <span class="stat-label">Requests Today:</span>
+                <span id="stat-daily" class="stat-val">0 / 100</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">This Minute:</span>
+                <span id="stat-min" class="stat-val">0 / 10</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Proactive Cooldown:</span>
+                <span id="stat-cooldown" class="stat-val">Ready</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Privacy Inspector Card (Sprint 5) -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <span class="card-icon">🛡️</span>
+              <div>
+                <h3>What the AI Sees (Privacy Inspector)</h3>
+                <p>Only coarse categories and rounded need stats are sent. Never titles or keys.</p>
+              </div>
+              <button id="refresh-payload-btn" class="tiny-btn" style="margin-left: auto;">Refresh Payload</button>
+            </div>
+            <pre id="payload-display" class="payload-box">Loading privacy payload...</pre>
+          </div>
+
+          <!-- Smart Positioning Card (Sprint 6) -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <span class="card-icon">📐</span>
+              <div>
+                <h3>Smart Positioning & Dodging</h3>
+                <p>Pandu intelligently slides away from active windows and tucks to screen edges.</p>
+              </div>
+            </div>
+
+            <div class="model-row" style="margin-top: 10px;">
+              <label for="pos-mode-select" class="model-label">Mode:</label>
+              <select id="pos-mode-select" class="model-dropdown">
+                <option value="smart">Smart (Dodge + Peek) 🌟</option>
+                <option value="dodge">Dodge Only (Jump to Corner) 🏃</option>
+                <option value="peek">Peek Only (Tuck to Edge) 👀</option>
+                <option value="off">Off (Stay in Place) 📌</option>
+              </select>
+            </div>
+
+            <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <span style="font-size: 11px; color: #94a3b8;">Active App: <strong id="pos-active-app" style="color: #2ed573;">None</strong></span>
+              <button id="remember-spot-btn" class="secondary-btn" style="width: auto; padding: 4px 10px; font-size: 11px;">📍 Remember Spot</button>
+            </div>
+
+            <div id="saved-spots-container" style="margin-top: 12px; background: #0f141c; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 10px;">
+              <div style="font-size: 10px; color: #94a3b8; margin-bottom: 6px; font-weight: 600;">SAVED PER-APP SPOTS</div>
+              <div id="saved-spots-list" style="display: flex; flex-direction: column; gap: 6px; max-height: 120px; overflow-y: auto;">
+                <span style="font-size: 11px; color: #64748b;">No per-app spots saved yet.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Productivity & Break Reminders Card (Sprint 7) -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <span class="card-icon">🍵</span>
+              <div>
+                <h3>Break Reminders & Wellness</h3>
+                <p>Pandu tracks continuous typing and encourages healthy stretch, water, and eye breaks.</p>
+              </div>
+            </div>
+
+            <div class="model-row" style="margin-top: 10px;">
+              <label for="setting-break-threshold" class="model-label">Break Threshold:</label>
+              <select id="setting-break-threshold" class="model-dropdown">
+                <option value="20">20 minutes of continuous typing</option>
+                <option value="30">30 minutes of continuous typing</option>
+                <option value="45">45 minutes of continuous typing</option>
+                <option value="50" selected>50 minutes of continuous typing (Default)</option>
+                <option value="60">60 minutes of continuous typing</option>
+                <option value="90">90 minutes of continuous typing</option>
+              </select>
+            </div>
+
+            <div style="margin-top: 10px; font-size: 11px; color: #94a3b8;">
+              Continuous typing: <strong id="typing-session-stat" style="color: #2ed573;">0m</strong> (Taking a break boosts Pandu's happiness!)
+            </div>
+          </div>
+
+          <!-- General App Preferences -->
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-shorten-timers">
+            <div class="setting-info">
+              <strong>Shorten Timers (Debug)</strong>
+              <span>Triggers break reminders in 1.5 minutes and nags in 1 minute for rapid testing.</span>
+            </div>
+          </label>
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-hide-fullscreen">
+            <div class="setting-info">
+              <strong>Hide when Fullscreen</strong>
+              <span>Automatically hide Pandu when a fullscreen window or game is detected.</span>
+            </div>
+          </label>
+
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-follow-monitor">
+            <div class="setting-info">
+              <strong>Follow Active Monitor</strong>
+              <span>Move Pandu to follow the display monitor of the currently focused window.</span>
+            </div>
+          </label>
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-autolaunch">
+            <div class="setting-info">
+              <strong>Start with Windows</strong>
+              <span>Automatically launch Pandu when you log in to Windows.</span>
+            </div>
+          </label>
+
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-mute">
+            <div class="setting-info">
+              <strong>Mute Sound Effects</strong>
+              <span>Silences synthesized chewing, petting, and emotion chimes.</span>
+            </div>
+          </label>
+
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-focus-mode">
+            <div class="setting-info">
+              <strong>Focus Mode (Silent Pet)</strong>
+              <span>Silences speech bubbles and keeps Pandu quiet while you work.</span>
+            </div>
+          </label>
+
+          <label class="setting-toggle">
+            <input type="checkbox" id="setting-fast-time">
+            <div class="setting-info">
+              <strong>Fast Time (x60) [Debug]</strong>
+              <span>Accelerates tamagotchi decay rates 60x for rapid offline testing.</span>
+            </div>
+          </label>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="control.js"></script>
+</body>
+</html>

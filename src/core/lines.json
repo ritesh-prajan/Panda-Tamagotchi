@@ -1,0 +1,66 @@
+{
+  "happy": [
+    "*nom nom* Bamboo is the best! 🎋",
+    "Just chilling up here~ (*^‿^*)",
+    "Feeling good! Thanks for keeping me company.",
+    "Basking in the desktop sunshine ✨",
+    "Life is peaceful when your tummy is full."
+  ],
+  "sleepy": [
+    "*yaaaawn*... getting so drowsy...",
+    "Just resting my eyes for a minute... z Z Z",
+    "Is it bedtime yet? *snores*",
+    "Cozy and warm... don't make loud noises~",
+    "z Z Z..."
+  ],
+  "angry": [
+    "Hmph! You completely forgot about me! >_<",
+    "I'm starving and ignored!! Ò_Ó",
+    "Empty tummy = FURIOUS PANDA!!",
+    "*huffs with puffed cheeks* Unacceptable!!",
+    "Bamboo now, or suffer my grumpy wrath! 💢"
+  ],
+  "hungry": [
+    "Tummy is rumbling loudly... *rumble*",
+    "Any bamboo lying around? (⊙ ﹃ ⊙)",
+    "I'm running on empty here...",
+    "Starving panda alert!! 🎋 please?",
+    "Could really use a crunchy snack..."
+  ],
+  "neglected": [
+    "Did you forget I exist? ( ; _ ; )",
+    "I'm shrinking away into sadness... *sniff*",
+    "So lonely in this corner of the screen...",
+    "Hello? Is anyone there? ...",
+    "Feeling so small and unloved... 💧"
+  ],
+  "typing": [
+    "Look at us typing away!! *tap tap*",
+    "Locking in! *crunch crunch* 💻",
+    "Speed demon mode engaged! ✨",
+    "Typing along with you! Let's get it done!"
+  ],
+  "fed": [
+    "*crunch crunch* Mmm, fresh bamboo!! 🎋",
+    "Delicious!! Full belly = happy panda!",
+    "Thank you for the treat! (*^‿^*)",
+    "*munch munch* Best bamboo ever!"
+  ],
+  "petted": [
+    "*purrs softly* Aww, headpats! ♥",
+    "That feels so nice~ (*´▽`*)",
+    "A bit more behind the ears please! ♥",
+    "Yay, you love me! ♥"
+  ],
+  "refuse_food": [
+    "*turns away* Hmph! I need love and pets first!",
+    "No bamboo for me! You neglected me too long! >_<",
+    "*shakes head stubborn* Pet me until I forgive you! 💢",
+    "*refuses food* Show some affection first!"
+  ],
+  "wake_up": [
+    "*grumpy blink* Who dares wake the sleeping beast?!",
+    "*groans* Five more minutes... pleaseee... >_<",
+    "*shuffles paws* So sleepy... why wake me? *grumble*"
+  ]
+}

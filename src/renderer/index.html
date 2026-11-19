@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Floating Hearts Container -->
+  <div id="hearts-container"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       MODAL / OVERLAY LAYER — always on top, hidden by default
+       Clicking outside a modal should close it via JS.
+       ═══════════════════════════════════════════════ -->
+  <div id="modal-backdrop" class="hidden"></div>
+
+  <!-- Voice Recording Modal -->
+  <div id="voice-modal" class="pandu-modal hidden" role="dialog" aria-modal="true">
+    <div class="voice-card">
+      <div class="voice-pulse-ring"></div>
+      <div class="voice-mic-icon">🎤</div>
+      <div id="voice-status-text">Listening… Speak task!</div>
+      <div id="voice-timer">0:00</div>
+      <button id="btn-stop-recording" class="voice-stop-btn">⏹ Done Speaking</button>
+    </div>
+  </div>
+
+  <!-- Task Draft Confirmation Card (voice → confirm before save) -->
+  <div id="task-draft-card" class="pandu-modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <span>✨ Proposed Task</span>
+      <button id="draft-close-btn" class="modal-close-btn">×</button>
+    </div>
+    <div class="modal-body">
+      <label class="modal-label">Task</label>
+      <input type="text" id="draft-title" class="modal-input" placeholder="e.g. Finish notes" />
+      <div class="modal-row">
+        <div class="modal-col">
+          <label class="modal-label">Due</label>
+          <input type="datetime-local" id="draft-due" class="modal-input-sm" />
+        </div>
+        <div class="modal-col">
+          <label class="modal-label">Priority</label>
+          <select id="draft-priority" class="modal-select">
+            <option value="low">Low 🔵</option>
+            <option value="medium" selected>Medium 🟡</option>
+            <option value="high">High 🔴</option>
+          </select>
+        </div>
+      </div>
+      <p class="modal-hint">Nothing is saved until you confirm!</p>
+    </div>
+    <div class="modal-actions">
+      <button id="draft-add-btn" class="btn-confirm">✅ Add Task</button>
+      <button id="draft-discard-btn" class="btn-cancel">❌ Discard</button>
+    </div>
+  </div>
+
+  <!-- Quick Typed Add Task Modal -->
+  <div id="quick-todo-modal" class="pandu-modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <span>✍️ New Task</span>
+      <button id="quick-todo-close" class="modal-close-btn">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="text" id="quick-todo-title" class="modal-input" placeholder="What needs to be done?" maxlength="120" />
+      <div class="modal-row">
+        <div class="modal-col">
+          <label class="modal-label">Due</label>
+          <input type="datetime-local" id="quick-todo-due" class="modal-input-sm" />
+        </div>
+        <div class="modal-col">
+          <label class="modal-label">Priority</label>
+          <select id="quick-todo-priority" class="modal-select">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button id="quick-todo-save" class="btn-confirm">Save Task</button>
+      <button id="quick-todo-cancel" class="btn-cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN PANDA STACK — speech, chat, break banner, panda, debug
+       All in normal document flow, stacked vertically.
+       ═══════════════════════════════════════════════ -->
+
+  <!-- Speech Bubble -->
+  <div id="speech-bubble" class="hidden">
+    <div id="speech-text">Hello!</div>
+    <div class="speech-arrow"></div>
+  </div>
+
+  <!-- Break Reminder Banner (inline — appears above panda) -->
+  <div id="break-banner" class="hidden">
+    <div class="break-banner-content">
+      <span class="break-icon">🍵</span>
+      <div class="break-text">
+        <strong id="break-title">Break Reminder!</strong>
+        <span id="break-sub">Typing for 50 mins</span>
+      </div>
+    </div>
+    <div class="break-actions">
+      <button id="btn-take-break" class="break-btn-primary" title="Taking a break gives Pandu happiness!">I took a break! 🍵</button>
+      <button id="btn-snooze-break" class="break-btn-secondary" title="Snooze for 5 minutes">Snooze 5m ⏳</button>
+    </div>
+  </div>
+
+  <!-- Chat Input Box (toggled by 'C') -->
+  <div id="chat-container" class="hidden">
+    <input type="text" id="chat-input" placeholder="Talk to Pandu..." maxlength="120" autocomplete="off" />
+    <button id="chat-send-btn" title="Send (Enter)">↵</button>
+  </div>
+
+  <!-- Main Panda Container -->
+  <div id="panda-container" class="idle-bounce shrink-stage-0 size-large"
+       title="Click-hold or double-click to Pet! Press C to chat, V for voice, D for debug, G for geometry.">
+    <pre id="panda-art"></pre>
+    <div id="emotion-badge">
+      <span id="emotion-name">happy</span>
+      <div class="action-buttons">
+        <button id="feed-btn" title="Feed Bamboo">🎋</button>
+        <button id="pet-btn" title="Pet Panda">🐾</button>
+        <button id="chat-toggle-btn" title="Chat (C)">💬</button>
+        <button id="voice-btn" title="Voice Task (V)">🎤</button>
+        <button id="quick-todo-btn" title="Add Task / View Todos">📋</button>
+      </div>
+      <span class="keys-hint">[C/V/D/G]</span>
+    </div>
+  </div>
+
+  <!-- Real-time debug panel toggled by 'D' -->
+  <div id="debug-panel" class="hidden">
+    <div class="debug-title">TAMAGOTCHI DEBUG (Press D to close)</div>
+    <div class="debug-row">
+      <span class="debug-label">Needs:</span>
+      <span id="dbg-needs" class="debug-val">H:100 E:100 M:100 A:100</span>
+    </div>
+    <div class="debug-row">
+      <span class="debug-label">Ignored:</span>
+      <span id="dbg-ignored" class="debug-val">0s (Stage 0)</span>
+    </div>
+    <div class="debug-row">
+      <span class="debug-label">Position Mode:</span>
+      <span id="dbg-pos-mode" class="debug-val">Smart</span>
+    </div>
+    <div class="debug-row">
+      <span class="debug-label">Active App:</span>
+      <span id="dbg-app" class="debug-val">Scanning...</span>
+    </div>
+    <div class="debug-row">
+      <span class="debug-label">Active Bounds:</span>
+      <span id="dbg-bounds" class="debug-val">None</span>
+    </div>
+    <div class="debug-row">
+      <span class="debug-label">Controls:</span>
+      <span class="debug-val">
+        <button id="dbg-fast-time-btn" class="dbg-btn">Fast Time (x60)</button>
+        <button id="dbg-mute-btn" class="dbg-btn">Mute</button>
+        <button id="dbg-geom-btn" class="dbg-btn">Geom (G)</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- Visual Geometry HUD toggled by 'G' -->
+  <div id="geom-hud" class="hidden">
+    <div class="geom-title">📐 SMART POSITIONING HUD (Press G to close)</div>
+    <div class="geom-row"><span>App:</span> <strong id="hud-app">None</strong></div>
+    <div class="geom-row"><span>Window Bounds:</span> <strong id="hud-bounds">[0, 0, 0, 0]</strong></div>
+    <div class="geom-row"><span>State:</span> <strong id="hud-state">Normal</strong></div>
+    <div class="geom-row"><span>Free Zones:</span> <strong id="hud-zones">BR, TR, TL</strong></div>
+    <div class="geom-row"><span>Manual Grace:</span> <strong id="hud-grace">0s</strong></div>
+  </div>
+
+  <script src="audio.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

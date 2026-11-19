@@ -1,0 +1,984 @@
+/* src/renderer/style.css */
+:root {
+  --idle-bounce-duration: 3.2s;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 6px;
+  font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  position: relative;
+}
+
+/* Floating Hearts */
+#hearts-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.floating-heart {
+  position: absolute;
+  font-size: 16px;
+  color: #ff4757;
+  pointer-events: none;
+  animation: floatHeart 1.4s ease-out forwards;
+  text-shadow: 0 0 6px rgba(255, 71, 87, 0.85);
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-10px, -24px) scale(1.25);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(12px, -55px) scale(0.85);
+    opacity: 0;
+  }
+}
+
+/* Speech Bubble */
+#speech-bubble {
+  position: relative;
+  max-width: 250px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  background: rgba(248, 249, 250, 0.96);
+  color: #1e272e;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  pointer-events: auto;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 50;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#speech-bubble.bubble-hyper {
+  border: 2px solid #ffa502;
+  color: #e67e22;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+#speech-bubble.bubble-sleepy {
+  background: rgba(235, 243, 250, 0.96);
+  color: #34495e;
+  font-style: italic;
+  font-weight: 500;
+}
+
+#speech-bubble.bubble-sassy {
+  border: 1px solid #ff4757;
+  color: #2f3542;
+}
+
+#speech-bubble.bubble-coach {
+  border: 2px solid #2ed573;
+  color: #1e272e;
+  font-weight: 700;
+}
+
+#speech-bubble.bubble-scholar {
+  border: 1px solid #1e90ff;
+  color: #2c3e50;
+}
+
+#speech-bubble.hidden {
+  opacity: 0;
+  display: none !important;
+  pointer-events: none;
+}
+
+.speech-arrow {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(248, 249, 250, 0.96);
+}
+
+/* Chat Input Container */
+#chat-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 260px;
+  width: 90%;
+  margin-bottom: 6px;
+  background: rgba(15, 20, 28, 0.92);
+  border: 1px solid rgba(46, 213, 115, 0.4);
+  border-radius: 12px;
+  padding: 3px 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 60;
+}
+
+#chat-container.hidden {
+  display: none !important;
+}
+
+#chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f1f2f6;
+  font-family: inherit;
+  font-size: 11px;
+  padding: 4px 6px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#chat-input::placeholder {
+  color: #747d8c;
+  font-size: 10.5px;
+}
+
+#chat-send-btn {
+  background: #2ed573;
+  color: #0f141c;
+  border: none;
+  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, background-color 0.15s;
+}
+
+#chat-send-btn:hover {
+  background: #26af5f;
+  transform: scale(1.05);
+}
+
+#chat-send-btn:active {
+  transform: scale(0.95);
+}
+
+#chat-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#chat-toggle-btn {
+  background: rgba(30, 144, 255, 0.2) !important;
+  border-color: rgba(30, 144, 255, 0.45) !important;
+  color: #70a1ff !important;
+}
+
+#chat-toggle-btn:hover {
+  background: rgba(30, 144, 255, 0.4) !important;
+}
+
+/* Main Panda Container — fully transparent, no box, underglow only */
+#panda-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.6s ease,
+              box-shadow 0.6s ease;
+  background-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  border: none;
+  pointer-events: auto;
+  transform-origin: center center;
+}
+
+#panda-container:active {
+  cursor: grabbing;
+}
+
+#panda-container.dragging {
+  animation: none !important;
+}
+
+/* Neglect Shrink Stages */
+.shrink-stage-0 { transform: scale(1.0); }
+.shrink-stage-1 { transform: scale(0.88); }
+.shrink-stage-2 { transform: scale(0.76); }
+.shrink-stage-3 { transform: scale(0.65); }
+.shrink-stage-4 { transform: scale(0.55); }
+
+/* Refusal Head Shake Animation */
+.shake-refuse {
+  animation: shakeRefuse 0.45s ease-in-out !important;
+}
+
+@keyframes shakeRefuse {
+  0%, 100% { transform: translateX(0) scale(0.55); }
+  20% { transform: translateX(-8px) rotate(-4deg) scale(0.55); }
+  40% { transform: translateX(8px) rotate(4deg) scale(0.55); }
+  60% { transform: translateX(-6px) rotate(-2deg) scale(0.55); }
+  80% { transform: translateX(6px) rotate(2deg) scale(0.55); }
+}
+
+/* Gentle idle bounce with customizable duration */
+.idle-bounce {
+  animation: idleBounce var(--idle-bounce-duration, 3.2s) ease-in-out infinite;
+}
+
+@keyframes idleBounce {
+  0%, 100% {
+    margin-top: 0;
+  }
+  50% {
+    margin-top: -4px;
+  }
+}
+
+#panda-art {
+  font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.15;
+  color: #f1f2f6;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.95),
+    0 0 10px rgba(46, 204, 113, 0.25);
+  white-space: pre;
+  display: block;
+}
+
+/* Sticker Art Image Container */
+#panda-art.is-sticker {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  line-height: 0;
+}
+
+#panda-art.is-sticker img.sticker-img {
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  image-rendering: auto;
+  transition: transform 0.08s ease-out;
+}
+
+/* Typing Bob Animation (distinct visual reading for typing) */
+.panda-typing-bob img.sticker-img,
+#panda-art.panda-typing-bob img.sticker-img {
+  animation: typingBob 0.32s ease-in-out infinite alternate;
+}
+
+@keyframes typingBob {
+  0% {
+    transform: translateY(0px) scale(var(--frame-scale, 1.0));
+  }
+  100% {
+    transform: translateY(-5px) scale(calc(var(--frame-scale, 1.0) * 1.03));
+  }
+}
+
+/* Neglected Sadness Filter (slight desaturate and slow blob-like sway) */
+.panda-neglected-sadness img.sticker-img,
+#panda-art.panda-neglected-sadness img.sticker-img {
+  filter: saturate(0.55) brightness(0.92) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+  animation: neglectedSway 4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes neglectedSway {
+  0%, 100% {
+    transform: rotate(0deg) scale(0.96);
+  }
+  50% {
+    transform: rotate(-2.5deg) scale(0.94);
+  }
+}
+
+/* Emotion badge & action buttons */
+#emotion-badge {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #a4b0be;
+  text-transform: capitalize;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+  width: 100%;
+}
+
+#panda-container:hover #emotion-badge {
+  opacity: 1;
+}
+
+#emotion-name {
+  color: #2ed573;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.action-buttons button {
+  background: rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.45);
+  color: #2ed573;
+  border-radius: 8px;
+  padding: 2px 6px;
+  font-size: 9.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.action-buttons button:hover {
+  background: rgba(46, 204, 113, 0.4);
+  transform: scale(1.05);
+}
+
+.action-buttons button:active {
+  transform: scale(0.95);
+}
+
+#pet-btn {
+  background: rgba(255, 71, 87, 0.2);
+  border-color: rgba(255, 71, 87, 0.45);
+  color: #ff6b81;
+}
+
+#pet-btn:hover {
+  background: rgba(255, 71, 87, 0.4);
+}
+
+.keys-hint {
+  font-size: 8.5px;
+  color: #747d8c;
+  flex-shrink: 0;
+}
+
+/* Debug Panel */
+#debug-panel {
+  margin-top: 6px;
+  width: 290px;
+  padding: 8px 10px;
+  background: rgba(13, 17, 23, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  color: #ced6e0;
+  pointer-events: auto;
+}
+
+#debug-panel.hidden {
+  display: none !important;
+}
+
+.debug-title {
+  font-weight: 700;
+  font-size: 9.5px;
+  color: #2ed573;
+  letter-spacing: 0.8px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 3px;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+  gap: 8px;
+}
+
+.debug-label {
+  color: #747d8c;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.debug-val {
+  color: #f1f2f6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
+.dbg-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f1f2f6;
+  border-radius: 6px;
+  padding: 1px 5px;
+  font-size: 9px;
+  cursor: pointer;
+  margin-left: 3px;
+  font-family: inherit;
+}
+
+.dbg-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   SPRINT 6 — Size Variants (large / medium / tiny)
+   Applied to #panda-container via JS: class "size-large" etc.
+   ============================================================ */
+
+/* Large (default, 330×340) — same as before, explicit class */
+.size-large #panda-art {
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+/* Medium (260×260) */
+.size-medium #panda-art {
+  font-size: 9.5px;
+  line-height: 1.2;
+}
+
+.size-medium #panda-container,
+.size-medium.panda-container-ref {
+  padding: 4px 2px;
+}
+
+/* Tiny (180×160) — peek mode */
+.size-tiny #panda-art {
+  font-size: 7px;
+  line-height: 1.15;
+}
+
+.size-tiny #emotion-badge {
+  display: none;
+}
+
+.size-tiny #speech-bubble {
+  max-width: 160px;
+  font-size: 9px;
+}
+
+/* Smooth size transition */
+#panda-art {
+  transition: font-size 0.35s ease;
+}
+
+/* ============================================================
+   SPRINT 6 — Geometry HUD
+   ============================================================ */
+#geom-hud {
+  position: fixed;
+  bottom: 6px;
+  left: 4px;
+  background: rgba(10, 14, 20, 0.88);
+  border: 1px solid rgba(46, 213, 115, 0.45);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 9px;
+  color: #2ed573;
+  z-index: 999;
+  min-width: 200px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+#geom-hud .geom-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ecf0f1;
+  margin-bottom: 5px;
+  letter-spacing: 0.5px;
+}
+
+#geom-hud .geom-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 2px;
+  color: #a4b0be;
+}
+
+#geom-hud .geom-row span {
+  flex-shrink: 0;
+  min-width: 86px;
+  color: #747d8c;
+}
+
+#geom-hud .geom-row strong {
+  color: #2ed573;
+  font-weight: 600;
+  word-break: break-all;
+}
+/* ============================================================
+   SPRINT 6 - Size Variants (large / medium / tiny)
+   ============================================================ */
+.size-large #panda-art  { font-size: 12px;  line-height: 1.25; }
+.size-medium #panda-art { font-size: 9.5px; line-height: 1.2;  }
+.size-tiny   #panda-art { font-size: 7px;   line-height: 1.15; }
+.size-medium #panda-container { padding: 4px 2px; }
+.size-tiny #emotion-badge     { display: none; }
+.size-tiny #speech-bubble     { max-width: 160px; font-size: 9px; }
+#panda-art { transition: font-size 0.35s ease; }
+
+/* ============================================================
+   SPRINT 6 - Geometry HUD
+   ============================================================ */
+#geom-hud {
+  position: fixed;
+  bottom: 6px;
+  left: 4px;
+  background: rgba(10, 14, 20, 0.88);
+  border: 1px solid rgba(46, 213, 115, 0.45);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 9px;
+  color: #2ed573;
+  z-index: 50;
+  min-width: 200px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+#geom-hud.hidden { display: none !important; }
+#geom-hud .geom-title { font-size: 9.5px; font-weight: 700; color: #ecf0f1; margin-bottom: 5px; letter-spacing: 0.5px; }
+#geom-hud .geom-row   { display: flex; gap: 6px; margin-bottom: 2px; color: #a4b0be; }
+#geom-hud .geom-row span   { flex-shrink: 0; min-width: 86px; color: #747d8c; }
+#geom-hud .geom-row strong { color: #2ed573; font-weight: 600; word-break: break-all; }
+
+/* ============================================================
+   SPRINT 7 - Productivity UI
+   Z-INDEX STACK:
+     50  = geom-hud (debug, non-interactive)
+     60  = chat-container
+    100  = hearts
+    290  = modal-backdrop
+    300  = pandu-modal (voice / draft / quick-add)
+   ============================================================ */
+
+/* -- Modal Backdrop -- */
+#modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 290;
+  pointer-events: auto;
+}
+#modal-backdrop.hidden { display: none !important; }
+
+/* -- Shared Modal Shell -- */
+.pandu-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(13, 18, 26, 0.98);
+  border: 1px solid rgba(46, 213, 115, 0.45);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  z-index: 300;
+  pointer-events: auto;
+  width: 290px;
+  animation: modalSlideIn 0.18s ease;
+}
+.pandu-modal.hidden { display: none !important; }
+
+@keyframes modalSlideIn {
+  from { transform: translate(-50%, -48%); opacity: 0; }
+  to   { transform: translate(-50%, -50%); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #2ed573;
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: #747d8c;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+  transition: color 0.15s;
+}
+.modal-close-btn:hover { color: #ff4757; }
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modal-label {
+  font-size: 9px;
+  color: #747d8c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+  display: block;
+}
+.modal-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  padding: 6px 9px;
+  color: #f1f2f6;
+  font-size: 11px;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  user-select: text;
+  -webkit-user-select: text;
+  pointer-events: auto;
+  cursor: text;
+}
+.modal-input:focus { border-color: #2ed573; }
+
+.modal-row { display: flex; gap: 8px; }
+.modal-col { flex: 1; display: flex; flex-direction: column; }
+
+.modal-input-sm,
+.modal-select {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  padding: 5px 7px;
+  color: #f1f2f6;
+  font-size: 10px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  user-select: text;
+  -webkit-user-select: text;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.modal-select option { background: #1a2232; color: #f1f2f6; }
+
+.modal-hint {
+  font-size: 8.5px;
+  color: #56636e;
+  text-align: center;
+  margin-top: 2px;
+}
+.modal-actions {
+  display: flex;
+  gap: 7px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.btn-confirm {
+  background: #2ed573;
+  color: #0a0f17;
+  border: none;
+  border-radius: 7px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-confirm:hover  { background: #26b562; transform: scale(1.03); }
+.btn-confirm:active { transform: scale(0.97); }
+
+.btn-cancel {
+  background: rgba(255, 71, 87, 0.12);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  color: #ff6b81;
+  border-radius: 7px;
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.btn-cancel:hover { background: rgba(255, 71, 87, 0.25); }
+
+/* -- Voice Modal (red-accented, narrower) -- */
+#voice-modal {
+  border-color: rgba(255, 71, 87, 0.5);
+  box-shadow: 0 10px 30px rgba(255, 71, 87, 0.25);
+  width: 230px;
+  text-align: center;
+  padding: 18px 16px;
+}
+.voice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.voice-pulse-ring {
+  position: absolute;
+  top: -6px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid #ff4757;
+  animation: pulseRing 1.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(0.9); opacity: 0.8; }
+  70%  { transform: scale(1.4); opacity: 0;   }
+  100% { opacity: 0; }
+}
+.voice-mic-icon {
+  font-size: 28px;
+  animation: pulseMic 1.2s infinite ease-in-out;
+  position: relative;
+  z-index: 1;
+}
+@keyframes pulseMic {
+  0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 2px #ff4757); }
+  50%       { transform: scale(1.18); filter: drop-shadow(0 0 10px #ff4757); }
+}
+#voice-status-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #f1f2f6;
+}
+#voice-timer {
+  font-size: 10px;
+  color: #ff6b81;
+  font-variant-numeric: tabular-nums;
+}
+.voice-stop-btn {
+  background: #ff4757;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 5px 14px;
+  font-size: 10.5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 4px;
+  transition: background 0.15s;
+}
+.voice-stop-btn:hover { background: #e0313f; }
+
+/* -- Break Reminder Banner (inline, stacks above panda) -- */
+#break-banner {
+  background: rgba(13, 20, 34, 0.96);
+  border: 1px solid #2ed573;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 16px rgba(46, 213, 115, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 290px;
+  pointer-events: auto;
+}
+#break-banner.hidden { display: none !important; }
+
+.break-banner-content { display: flex; align-items: center; gap: 9px; }
+.break-icon { font-size: 20px; }
+.break-text { display: flex; flex-direction: column; gap: 1px; }
+.break-text strong { font-size: 11px; color: #2ed573; }
+.break-text span   { font-size: 9.5px; color: #8899aa; }
+.break-actions     { display: flex; gap: 6px; justify-content: flex-end; }
+
+.break-btn-primary {
+  background: #2ed573;
+  color: #0a0f17;
+  border: none;
+  border-radius: 7px;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.1s;
+}
+.break-btn-primary:hover { background: #26b562; transform: scale(1.03); }
+
+.break-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.break-btn-secondary:hover { background: rgba(255, 255, 255, 0.16); }
+
+/* -- Button bar: icon-only, compact -- */
+.action-buttons button {
+  font-size: 13px;
+  padding: 2px 5px;
+}
+/* ============================================================
+   SPRINT 8 — Visual Styles (Cute Anime, Chunky Robot)
+   ============================================================ */
+
+#panda-art.is-svg {
+  text-shadow: none !important;
+  white-space: normal !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#panda-art.is-svg svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  transition: transform 0.25s ease;
+}
+
+.size-large #panda-art.is-svg svg  { width: 180px; height: 180px; }
+.size-medium #panda-art.is-svg svg { width: 145px; height: 145px; }
+.size-tiny #panda-art.is-svg svg   { width: 110px; height: 95px; }
+
+/* Style Variants Container Theming — only glow/shadow, no background boxes */
+#panda-container.style-cute-anime {
+  /* no background override — stays transparent */
+}
+
+#panda-container.style-chunky-robot {
+  border-radius: 12px;
+}
+
+/* Style Variants Speech Bubble Theming */
+#speech-bubble.bubble-style-cute-anime {
+  background: rgba(255, 250, 252, 0.96);
+  border: 1.5px solid #ff9bb2;
+  color: #2d3436;
+  box-shadow: 0 4px 14px rgba(255, 155, 178, 0.35);
+  border-radius: 16px;
+}
+
+#speech-bubble.bubble-style-cute-anime .speech-arrow {
+  border-top-color: rgba(255, 250, 252, 0.96);
+}
+
+#speech-bubble.bubble-style-chunky-robot {
+  background: rgba(10, 18, 28, 0.96);
+  border: 1.5px solid #00f0ff;
+  color: #00f0ff;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
+  border-radius: 8px;
+}
+
+#panda-container.style-official-sticker {
+  /* fully transparent — underglow only via has-mood-glow */
+}
+
+/* Ambient Mood Glow System:
+   Pure drop-shadow underglow — no box, no border, completely transparent container.
+   The glow wraps the actual sprite pixels (via filter: drop-shadow) and breathes softly. */
+#panda-container.has-mood-glow {
+  animation: moodPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes moodPulse {
+  0%, 100% {
+    filter:
+      drop-shadow(0 6px 18px var(--glow-color, rgba(46, 213, 115, 0.5)))
+      drop-shadow(0 2px 8px var(--glow-color, rgba(46, 213, 115, 0.3)));
+  }
+  50% {
+    filter:
+      drop-shadow(0 8px 28px var(--glow-color, rgba(46, 213, 115, 0.75)))
+      drop-shadow(0 2px 12px var(--glow-color, rgba(46, 213, 115, 0.5)));
+  }
+}
+
+#panda-container.mood-glow-happy    { --glow-color: rgba(46, 213, 115, 0.6); }
+#panda-container.mood-glow-sleepy   { --glow-color: rgba(162, 155, 254, 0.65); }
+#panda-container.mood-glow-hungry   { --glow-color: rgba(255, 159, 67, 0.65); }
+#panda-container.mood-glow-angry    { --glow-color: rgba(255, 71, 87, 0.65); }
+#panda-container.mood-glow-petted   { --glow-color: rgba(255, 107, 129, 0.7); }
+#panda-container.mood-glow-eating   { --glow-color: rgba(46, 213, 115, 0.7); }
+#panda-container.mood-glow-neglected   { --glow-color: rgba(112, 161, 255, 0.6); }
+#panda-container.mood-glow-listening   { --glow-color: rgba(254, 202, 87, 0.7); }
+#panda-container.mood-glow-typing      { --glow-color: rgba(0, 210, 211, 0.6); }
+#panda-container.mood-glow-celebration { --glow-color: rgba(255, 215, 0, 0.75); }
+
+#speech-bubble.bubble-style-official-sticker {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1.8px solid #5ebb56;
+  color: #242831;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(94, 187, 86, 0.25);
+  border-radius: 14px;
+}
+
+#speech-bubble.bubble-style-official-sticker .speech-arrow {
+  border-top-color: #5ebb56;
+}
+
+#speech-bubble.bubble-style-chunky-robot .speech-arrow {
+  border-top-color: rgba(10, 18, 28, 0.96);
+}

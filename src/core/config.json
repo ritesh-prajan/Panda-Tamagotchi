@@ -1,0 +1,28 @@
+{
+  "tickIntervalMs": 1000,
+  "saveIntervalMs": 60000,
+  "maxOfflineHours": 8,
+  "hungerDecayPerMin": 1.25,
+  "energyDecayPerMin": 0.85,
+  "energySleepRecoveryPerMin": 3.0,
+  "moodDecayPerMin": 1.0,
+  "affectionDecayPerMin": 1.2,
+  "sleepStartThreshold": 20,
+  "wakeThreshold": 70,
+  "ignoredAngerThresholdSec": 600,
+  "neglectStagesSec": {
+    "stage1": 900,
+    "stage2": 1800,
+    "stage3": 3600,
+    "stage4": 7200
+  },
+  "petsToRecoverFromRefusal": 15,
+  "feedHungerGain": 35,
+  "feedMoodGain": 15,
+  "petAffectionGain": 10,
+  "petMoodGain": 8,
+  "sleepNightStart": 23,
+  "sleepNightEnd": 7,
+  "speechCooldownSec": 90,
+  "speechDisplayDurationMs": 4000
+}
