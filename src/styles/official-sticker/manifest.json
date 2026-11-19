@@ -3,6 +3,7 @@
   "baseDir": "assets/official-chibi-opt",
   "normalization": {
     "idle": { "scale": 1.33, "offsetX": 0, "offsetY": 8, "baseW": 288, "baseH": 384 },
+    "typing": { "scale": 1.12, "offsetX": 0, "offsetY": 4, "baseW": 288, "baseH": 384 },
     "listening": { "scale": 1.24, "offsetX": 0, "offsetY": 6, "baseW": 288, "baseH": 384 },
     "celebration": { "scale": 1.15, "offsetX": 0, "offsetY": 2, "baseW": 384, "baseH": 384 },
     "standard": { "scale": 1.0, "offsetX": 0, "offsetY": 0, "baseW": 384, "baseH": 384 }
@@ -27,12 +28,11 @@
       "profile": "idle"
     },
     "typing": {
-      "status": "placeholder",
-      "note": "Reuses idle with CSS bob class; needs dedicated keyboard typing sprite sheet",
-      "frameDelayMs": 220,
-      "cssClass": "panda-typing-bob",
-      "frames": ["idle_0.png", "idle_1.png", "idle_3.png", "idle_1.png"],
-      "profile": "idle"
+      "status": "final",
+      "note": "Official 4-panel typing animation with animated paws & keyboard",
+      "frameDelayMs": 180,
+      "profile": "typing",
+      "frames": ["typing_0.png", "typing_1.png", "typing_2.png", "typing_3.png"]
     },
     "eating": {
       "status": "placeholder",

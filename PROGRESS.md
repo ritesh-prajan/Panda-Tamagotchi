@@ -316,7 +316,7 @@ Pandu is an offline-first Windows desktop pet tamagotchi (cute ASCII panda float
 5. **Emotion Wiring & Placeholder Art Handling**:
    - **`happy`**: Clean single 5-frame loop (`idle_0,1,2,3,1`).
    - **`blinking`**: 4 frames (`idle_0,1,2,1`).
-   - **`typing`**: Idle frames enhanced with animated keyframe bob (`panda-typing-bob`); auto-restores to base emotion when typing stops.
+   - **`typing`**: Upgraded from placeholder to **final official 4-panel animation** (`typing_0..3`) sliced from *"Pandu's Four-Panel Typing Celebration"*, with active typing paw movement and brisk 180ms cadence. Auto-restores to base emotion when typing stops.
    - **`eating`**: Fast chew delay loop.
    - **`angry`**: Full tantrum sequence (`tantrum_0..5`).
    - **`hungry`**: Droopy sleepy frames (`sleepy_1`, `sleepy_0` only; no angry frames).

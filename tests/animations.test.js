@@ -65,11 +65,20 @@ assert.strictEqual(eatingFiles[1], 'idle_3.png', 'Eating frame 1 should be open 
 assert.strictEqual(eatingFiles[3], 'idle_3.png', 'Eating frame 3 should be open mouth chew');
 console.log('✓ PASS: Eating animation alternates closed and open mouth chewing');
 
-// 4. Verify Typing Bob metadata
+// 4. Verify Typing Animation (Official 4-panel artwork)
 const typingLook = getLook('official-sticker', 'typing', 'large');
-assert.strictEqual(typingLook.cssClass, 'panda-typing-bob', 'Typing must have panda-typing-bob class');
-assert(typingLook.frameDelayMs <= 250, 'Typing delay should be brisk (<=250ms)');
-console.log('✓ PASS: Typing has active bob class and brisk cadence');
+const typingFiles = typingLook.frames.map(f => f.filename);
+console.log('Typing frames:', typingFiles.join(', '));
+assert.strictEqual(typingLook.status, 'final', 'Typing should now be status: final');
+assert.strictEqual(typingLook.frames.length, 4, 'Typing must have 4 dedicated frames');
+assert.deepStrictEqual(typingFiles, [
+  'typing_0.png',
+  'typing_1.png',
+  'typing_2.png',
+  'typing_3.png'
+]);
+assert(typingLook.frameDelayMs <= 200, 'Typing delay should be brisk (<=200ms)');
+console.log('✓ PASS: Typing has 4 dedicated official animation frames with brisk cadence');
 
 // 5. Verify Neglected Sadness metadata
 const neglectedLook = getLook('official-sticker', 'neglected', 'large');

@@ -20,7 +20,7 @@ To maintain seamless visual coherence with existing final sprites (`angry`/tantr
 | Emotion | Current Status | Current Temp Mapping | Target Frames Needed |
 | :--- | :--- | :--- | :--- |
 | **happy** | ⚠️ Placeholder | `idle_0,1,2,3,1` | 4 frames (joyful bounce / waving paws) |
-| **typing** | ⚠️ Placeholder | `idle_*` + CSS bob | 4 frames (paws typing on tiny keyboard) |
+| **typing** | ✅ Final | `typing_0..3` | Complete (Four-panel typing celebration) |
 | **eating** | ⚠️ Placeholder | `idle_*` (fast chew) | 6 frames (crunching fresh bamboo stalk) |
 | **hungry** | ⚠️ Placeholder | `sleepy_1,0` (droopy) | 4 frames (tummy rumbles, empty bowl) |
 | **neglected** | ⚠️ Placeholder | `sleepy_*` + CSS sadness filter | 4 frames (curled up, weeping/drooping ears) |
