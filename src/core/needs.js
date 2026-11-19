@@ -181,16 +181,14 @@ class NeedsEngine {
 
     if (this.isWokenUp) {
       this.needs.isSleeping = false;
-    } else if (isNight) {
-      this.needs.isSleeping = true;
     } else if (this.needs.isSleeping) {
       // Keep sleeping until energy reaches wakeThreshold
       if (this.needs.energy >= wakeThreshold) {
         this.needs.isSleeping = false;
       }
     } else {
-      // Start sleeping when energy drops below sleepStartThreshold
-      if (this.needs.energy < sleepStart) {
+      // Start sleeping when energy drops below sleepStartThreshold or night hours when unattended
+      if (this.needs.energy < sleepStart || (isNight && this.needs.ignoredSeconds >= 60)) {
         this.needs.isSleeping = true;
       }
     }

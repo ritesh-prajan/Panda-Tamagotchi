@@ -330,6 +330,16 @@ Pandu is an offline-first Windows desktop pet tamagotchi (cute ASCII panda float
    - Generated `docs/ART_TODO.md` with complete frame requirements and Midjourney/Flux prompts for all 5 placeholder emotions (`happy`, `typing`, `eating`, `hungry`, `neglected`).
    - Created `tests/styles.test.js` validating all 120 style/emotion/size combinations and disk presence of every sprite.
 
+7. **Animation Rework & Interaction Polish**:
+   - **Unattended Auto-Sleep (25s)**: Transition to `sleepy` occurs after 25s of inactivity. Any click, drag, or typing activity wakes Pandu immediately and restores `happy`.
+   - **Flicker-Free Sleep Loop**: When Pandu is asleep, he never restarts from the initial standing/nodding frame 0; he continuously and smoothly cycles between the sleeping `z`, `zz`, and `zzz` frames (frames 3, 4, 5).
+   - **Cushion Sleep Immobility**: Added `.emotion-sleepy` rule to halt `.idle-bounce` during sleep so Pandu rests quietly on his cushion.
+   - **Eating Pacing (5s)**: Eating plays alternating closed/open mouth chew frames (`idle_0, 3, 1, 3, 0, 3`) for a full 5-second sequence before restoring canonical state emotion.
+   - **Petting Pacing (5s)**: Petting plays 5 full frames (omitting the washed-out frame 2 artifact) for 5 seconds with hearts and soft bubble.
+   - **Typing Isolation**: Moved CSS keyframe bob (`panda-typing-bob`) to `#panda-art` container so it does not overwrite the inline transform/scale normalization matrix of the sprite `<img>`.
+   - **Mood Glow Palette**: Expanded ambient underglow to cover all 12 emotions, including checklist (cyan) and tea (mint green).
+   - **Test Suite (`tests/animations.test.js`)**: Validated animation loops, `loopFromFrame` progression, petted frame omission, and eating chew cadence.
+
 ---
 
 ## Current Known Issues / Notes

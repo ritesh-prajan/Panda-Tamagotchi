@@ -262,6 +262,11 @@ html, body {
   animation: idleBounce var(--idle-bounce-duration, 3.2s) ease-in-out infinite;
 }
 
+/* Sleep pauses the idle bounce so Pandu rests peacefully on cushion */
+#panda-container.emotion-sleepy {
+  animation: none !important;
+}
+
 @keyframes idleBounce {
   0%, 100% {
     margin-top: 0;
@@ -302,35 +307,33 @@ html, body {
   transition: transform 0.08s ease-out;
 }
 
-/* Typing Bob Animation (distinct visual reading for typing) */
-.panda-typing-bob img.sticker-img,
-#panda-art.panda-typing-bob img.sticker-img {
-  animation: typingBob 0.32s ease-in-out infinite alternate;
+/* Typing Bob Animation (applied to #panda-art container to preserve img transform) */
+#panda-art.panda-typing-bob {
+  animation: typingBob 0.28s ease-in-out infinite alternate;
 }
 
 @keyframes typingBob {
   0% {
-    transform: translateY(0px) scale(var(--frame-scale, 1.0));
+    transform: translateY(0px);
   }
   100% {
-    transform: translateY(-5px) scale(calc(var(--frame-scale, 1.0) * 1.03));
+    transform: translateY(-4px);
   }
 }
 
-/* Neglected Sadness Filter (slight desaturate and slow blob-like sway) */
-.panda-neglected-sadness img.sticker-img,
-#panda-art.panda-neglected-sadness img.sticker-img {
+/* Neglected Sadness Filter (applied to #panda-art container to preserve img transform) */
+#panda-art.panda-neglected-sadness {
   filter: saturate(0.55) brightness(0.92) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
-  animation: neglectedSway 4s ease-in-out infinite;
+  animation: neglectedSway 3.6s ease-in-out infinite;
   transform-origin: bottom center;
 }
 
 @keyframes neglectedSway {
   0%, 100% {
-    transform: rotate(0deg) scale(0.96);
+    transform: rotate(0deg);
   }
   50% {
-    transform: rotate(-2.5deg) scale(0.94);
+    transform: rotate(-2deg) translateY(2px);
   }
 }
 
@@ -965,6 +968,8 @@ html, body {
 #panda-container.mood-glow-listening   { --glow-color: rgba(254, 202, 87, 0.7); }
 #panda-container.mood-glow-typing      { --glow-color: rgba(0, 210, 211, 0.6); }
 #panda-container.mood-glow-celebration { --glow-color: rgba(255, 215, 0, 0.75); }
+#panda-container.mood-glow-checklist   { --glow-color: rgba(72, 219, 251, 0.7); }
+#panda-container.mood-glow-tea         { --glow-color: rgba(29, 209, 161, 0.7); }
 
 #speech-bubble.bubble-style-official-sticker {
   background: rgba(255, 255, 255, 0.96);

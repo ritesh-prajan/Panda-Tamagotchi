@@ -16,20 +16,20 @@
     "happy": {
       "status": "placeholder",
       "note": "Reuses idle frames once; needs dedicated sitting/waving happy idle animation",
-      "frameDelayMs": 700,
+      "frameDelayMs": 480,
       "frames": ["idle_0.png", "idle_1.png", "idle_2.png", "idle_3.png", "idle_1.png"],
       "profile": "idle"
     },
     "blinking": {
       "status": "final",
-      "frameDelayMs": 300,
+      "frameDelayMs": 220,
       "frames": ["idle_0.png", "idle_1.png", "idle_2.png", "idle_1.png"],
       "profile": "idle"
     },
     "typing": {
       "status": "placeholder",
       "note": "Reuses idle with CSS bob class; needs dedicated keyboard typing sprite sheet",
-      "frameDelayMs": 280,
+      "frameDelayMs": 220,
       "cssClass": "panda-typing-bob",
       "frames": ["idle_0.png", "idle_1.png", "idle_3.png", "idle_1.png"],
       "profile": "idle"
@@ -37,27 +37,27 @@
     "eating": {
       "status": "placeholder",
       "note": "Fast chew frames; needs dedicated bamboo chomping & swallowing sprite sheet",
-      "frameDelayMs": 250,
-      "frames": ["idle_0.png", "idle_1.png", "idle_2.png", "idle_3.png", "idle_1.png"],
+      "frameDelayMs": 380,
+      "frames": ["idle_0.png", "idle_3.png", "idle_1.png", "idle_3.png", "idle_0.png", "idle_3.png"],
       "profile": "idle"
     },
     "angry": {
       "status": "final",
-      "frameDelayMs": 450,
+      "frameDelayMs": 320,
       "frames": ["tantrum_0.png", "tantrum_1.png", "tantrum_2.png", "tantrum_3.png", "tantrum_4.png", "tantrum_5.png"],
       "profile": "standard"
     },
     "hungry": {
       "status": "placeholder",
       "note": "Uses sleepy droop eyes as tummy rumbling longing; needs hungry belly-rub sprite",
-      "frameDelayMs": 800,
+      "frameDelayMs": 750,
       "frames": ["sleepy_1.png", "sleepy_0.png"],
       "profile": "standard"
     },
     "neglected": {
       "status": "placeholder",
       "note": "Sleepy curl with sadness desaturate & sway filter; needs dedicated lonely cry sprite",
-      "frameDelayMs": 900,
+      "frameDelayMs": 850,
       "cssClass": "panda-neglected-sadness",
       "frames": ["sleepy_0.png", "sleepy_1.png", "sleepy_2.png"],
       "profile": "standard"
@@ -67,37 +67,37 @@
       "note": "Skips frame 2 (petting_2.png) due to head art artifact",
       "frameDelayMs": 850,
       "skipFrames": [2],
-      "frames": ["petting_0.png", "petting_1.png", "petting_3.png", "petting_4.png", "petting_5.png"],
+      "frames": ["petting_0.png", "petting_1.png", "petting_2.png", "petting_3.png", "petting_4.png", "petting_5.png"],
       "profile": "standard"
     },
     "sleepy": {
       "status": "final",
-      "frameDelayMs": 900,
+      "frameDelayMs": 850,
       "loopFromFrame": 3,
       "frames": ["sleepy_0.png", "sleepy_1.png", "sleepy_2.png", "sleepy_3.png", "sleepy_4.png", "sleepy_5.png"],
       "profile": "standard"
     },
     "celebration": {
       "status": "final",
-      "frameDelayMs": 320,
+      "frameDelayMs": 240,
       "frames": ["celebration_0.png", "celebration_1.png", "celebration_2.png", "celebration_3.png", "celebration_4.png", "celebration_5.png", "celebration_6.png", "celebration_7.png"],
       "profile": "celebration"
     },
     "listening": {
       "status": "final",
-      "frameDelayMs": 350,
+      "frameDelayMs": 320,
       "frames": ["listening_0.png", "listening_1.png", "listening_2.png", "listening_3.png"],
       "profile": "listening"
     },
     "checklist": {
       "status": "final",
-      "frameDelayMs": 400,
+      "frameDelayMs": 360,
       "frames": ["checklist_0.png", "checklist_1.png", "checklist_2.png", "checklist_3.png", "checklist_4.png", "checklist_5.png"],
       "profile": "standard"
     },
     "tea": {
       "status": "final",
-      "frameDelayMs": 450,
+      "frameDelayMs": 400,
       "frames": ["tea_0.png", "tea_1.png", "tea_2.png", "tea_3.png", "tea_4.png", "tea_5.png"],
       "profile": "standard"
     }

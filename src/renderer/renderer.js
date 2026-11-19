@@ -192,21 +192,8 @@ async function triggerPet() {
     return result;
   }
 
-  // Visual reaction: show petted look for ~5 seconds with slow frame pacing
-  currentEmotion = 'petted';
-  startAnimation();
-  showSpeechBubble('so fluffy... 🐾', 10000);
-
-  setTimeout(async () => {
-    try {
-      const s = await window.pandaApi.getState();
-      if (s && s.currentEmotion) {
-        currentEmotion = s.currentEmotion;
-        startAnimation();
-      }
-    } catch (e) {}
-  }, 5100);  // let full 5-second petting play (6 frames × 850ms)
-
+  // Visual reaction: 5-second petting
+  triggerTemporaryEmotion('petted', 'so fluffy... 🐾', 5000);
   return result;
 }
 
@@ -220,23 +207,9 @@ async function triggerFeed() {
     }, 450);
   } else if (result && result.success) {
     if (window.pandaAudio) window.pandaAudio.playChew();
-
     recordUserInteraction();
-
-    // Visual reaction: show eating look for ~5 seconds with slow frame pacing
-    currentEmotion = 'eating';
-    startAnimation();
-    showSpeechBubble('*munch munch munch* 🎋', 10000);
-
-    setTimeout(async () => {
-      try {
-        const s = await window.pandaApi.getState();
-        if (s && s.currentEmotion) {
-          currentEmotion = s.currentEmotion;
-          startAnimation();
-        }
-      } catch (e) {}
-    }, 5100);  // 6 frames × 850ms ≈ 5 seconds
+    // Visual reaction: 5-second eating
+    triggerTemporaryEmotion('eating', '*munch munch munch* 🎋', 5000);
   }
   return result;
 }
@@ -329,13 +302,16 @@ function endDrag(e) {
 pandaContainer.addEventListener('pointerup', endDrag);
 pandaContainer.addEventListener('pointercancel', endDrag);
 
-// ---------------- Speech Bubbles & Chat Interaction ----------------
+// ---------------- Unattended Auto-Sleep & Mood Glow ----------------
+const AUTO_SLEEP_DELAY_MS = 25000;
+let autoSleepTimer = null;
+let isAutoSleeping = false;
 
 // Mood glow colours keyed by emotion
 const MOOD_GLOW_CLASSES = [
   'mood-glow-happy', 'mood-glow-sleepy', 'mood-glow-hungry', 'mood-glow-angry',
   'mood-glow-petted', 'mood-glow-eating', 'mood-glow-neglected', 'mood-glow-listening',
-  'mood-glow-typing', 'mood-glow-celebration'
+  'mood-glow-typing', 'mood-glow-celebration', 'mood-glow-checklist', 'mood-glow-tea'
 ];
 
 function activateMoodGlow() {
@@ -351,9 +327,38 @@ function deactivateMoodGlow() {
   MOOD_GLOW_CLASSES.forEach(c => pandaContainer.classList.remove(c));
 }
 
-function recordUserInteraction() {
-  // Clear mood glow on any interaction — it reactivates after the next speech bubble hides
+function resetAutoSleepTimer() {
+  if (autoSleepTimer) {
+    clearTimeout(autoSleepTimer);
+    autoSleepTimer = null;
+  }
+
+  // If Pandu was sleeping, any click, drag, or typing wakes him immediately and restores happy!
+  if (isAutoSleeping || currentEmotion === 'sleepy') {
+    isAutoSleeping = false;
+    currentEmotion = 'happy';
+    startAnimation();
+    if (window.pandaAudio) window.pandaAudio.playHappy();
+  }
+
+  // Clicking or interacting always deactivates the glow
   deactivateMoodGlow();
+
+  // Restart 25s unattended timer
+  autoSleepTimer = setTimeout(() => {
+    const isModalOpen = isChatOpen || isRecordingVoice || isAnyModalVisible() ||
+      (breakBanner && !breakBanner.classList.contains('hidden'));
+
+    if (!isModalOpen && currentEmotion !== 'angry' && currentEmotion !== 'neglected') {
+      isAutoSleeping = true;
+      currentEmotion = 'sleepy';
+      startAnimation();
+    }
+  }, AUTO_SLEEP_DELAY_MS);
+}
+
+function recordUserInteraction() {
+  resetAutoSleepTimer();
 }
 
 function showSpeechBubble(text, durationMs = 10000) {
@@ -649,7 +654,20 @@ function startAnimation(overrideDelayMs = null) {
 
   currentLook = window.pandaApi.getLook(currentStyle, currentEmotion, currentSize);
   preloadLookFrames(currentLook);
-  currentFrameIndex = 0;
+
+  const loopFrom = (currentLook.loopFromFrame != null) ? currentLook.loopFromFrame : 0;
+  // If already sleeping and cycling between z, zz, zzz, preserve loop position so it doesn't jump to frame 0!
+  if (currentEmotion === 'sleepy' && currentFrameIndex >= loopFrom && currentLook.frames && currentLook.frames.length > loopFrom) {
+    currentFrameIndex = loopFrom + ((currentFrameIndex - loopFrom) % (currentLook.frames.length - loopFrom));
+  } else {
+    currentFrameIndex = 0;
+  }
+
+  // Update container emotion class so sleepy pauses bounce
+  if (pandaContainer) {
+    pandaContainer.classList.toggle('emotion-sleepy', currentEmotion === 'sleepy');
+  }
+
   renderCurrentFrame();
 
   if (emotionNameEl) {
@@ -663,7 +681,6 @@ function startAnimation(overrideDelayMs = null) {
     const chewMult = currentPersonality?.animationTweaks?.chewSpeedMultiplier || 1.0;
     delay = Math.round(delay / chewMult);
 
-    const loopFrom = (currentLook.loopFromFrame != null) ? currentLook.loopFromFrame : 0;
     const totalFrames = currentLook.frames.length;
 
     animationTimer = setInterval(() => {
@@ -795,6 +812,7 @@ pandaContainer.addEventListener('mouseleave', () => {
 // ---------------- Typing Reaction Logic ----------------
 const STRONG_EMOTIONS = ['angry', 'sleepy', 'neglected', 'hungry'];
 let isCurrentlyTypingReaction = false;
+let savedEmotionBeforeTyping = null;
 
 function handleTypingActivity(data) {
   const { kpm, isTyping } = data;
@@ -805,7 +823,7 @@ function handleTypingActivity(data) {
   }
 
   if (isTyping) {
-    // Typing counts as user activity – reset idle/sleep timer
+    // Typing counts as user activity – reset idle/sleep timer & wake if sleeping
     recordUserInteraction();
   }
 
@@ -814,14 +832,14 @@ function handleTypingActivity(data) {
   if (isTyping && !isStrong) {
     if (!isCurrentlyTypingReaction) {
       isCurrentlyTypingReaction = true;
-      currentLook = window.pandaApi.getLook(currentStyle, 'typing', currentSize);
-      preloadLookFrames(currentLook);
-      renderCurrentFrame();
+      savedEmotionBeforeTyping = currentEmotion;
+      currentEmotion = 'typing';
+      startAnimation();
     }
   } else if (!isTyping && isCurrentlyTypingReaction) {
     isCurrentlyTypingReaction = false;
-    currentLook = window.pandaApi.getLook(currentStyle, currentEmotion, currentSize);
-    renderCurrentFrame();
+    currentEmotion = savedEmotionBeforeTyping || 'happy';
+    startAnimation();
   }
 }
 
@@ -846,6 +864,8 @@ function toggleDebugPanel() {
 
 // ---------------- Keyboard Debug & Chat Listeners ----------------
 window.addEventListener('keydown', (e) => {
+  recordUserInteraction();
+
   // If typing in the chat input, ignore hotkeys
   if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) {
     return;
@@ -1444,6 +1464,7 @@ async function init() {
     });
   }
 
+  resetAutoSleepTimer();
   scheduleIdlePreload();
   startAnimation();
   updateMouseIgnoreState();
